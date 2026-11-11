@@ -60,7 +60,8 @@ class PetugasController extends Controller
     public function panggil(Request $request)
     {
         $petugas = $request->user();
-
+     
+        
         if (! $petugas->loket) {
             return back()->with('galat', 'Akun Anda belum ditempatkan di loket.');
         }

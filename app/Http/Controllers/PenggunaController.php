@@ -24,46 +24,29 @@ class PenggunaController extends Controller
         $daftarLayanan = Layanan::orderBy('kode')->get();
         $dipilih = $daftarLayanan->firstWhere('id', (int) $request->query('layanan')) ?? $daftarLayanan->first();
 
-        $tiket = Antrean::with('layanan')
-            ->where('token', $this->token($request))
-            ->aktif()->latest('id')->first();
+        $tiketCetak = session('tiket_cetak')
+            ? Antrean::with('layanan')->find(session('tiket_cetak'))
+            : null;
 
-        $sedangDilayani = $estimasi = $sebelumAnda = null;
-
-        if ($tiket) {
-            $sedangDilayani = Antrean::where('layanan_id', $tiket->layanan_id)
-                ->where('status', 'dilayani')->latest('urutan')->first();
-            $sebelumAnda = Antrean::where('layanan_id', $tiket->layanan_id)
-                ->where('urutan', '<', $tiket->urutan)->aktif()->count();
-            $estimasi = $sebelumAnda * $tiket->layanan->rata_rata_menit;
-        }
-
-        return view('pengguna.beranda', compact(
-            'daftarLayanan', 'dipilih', 'tiket', 'sedangDilayani', 'estimasi', 'sebelumAnda'
-        ));
+        return view('pengguna.beranda', compact('daftarLayanan', 'dipilih', 'tiketCetak'));
     }
 
     public function ambil(Request $request)
     {
-        $token = $this->token($request);
         $data = $request->validate(['layanan_id' => 'required|exists:layanan,id']);
-
-        if (Antrean::where('token', $token)->aktif()->exists()) {
-            return back()->with('galat', 'Anda masih memiliki tiket aktif. Selesaikan dulu sebelum mengambil nomor baru.');
-        }
 
         $layanan = Layanan::findOrFail($data['layanan_id']);
         $urutan = (Antrean::where('layanan_id', $layanan->id)->max('urutan') ?? 0) + 1;
 
-        Antrean::create([
-            'token' => $token,
+        $tiket = Antrean::create([
+            'token' => $this->token($request),
             'layanan_id' => $layanan->id,
             'urutan' => $urutan,
             'nomor' => sprintf('%s-%03d', $layanan->kode, $urutan),
             'diterbitkan_at' => now(),
         ]);
 
-        return redirect()->route('beranda')->with('sukses', 'Nomor antrean berhasil diambil.');
+        return redirect()->route('beranda', ['layanan' => $layanan->id])->with('tiket_cetak', $tiket->id);
     }
 
     public function layanan()

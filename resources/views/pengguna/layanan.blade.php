@@ -2,6 +2,8 @@
 @section('judul', 'Layanan • Sistem Antrian Loket')
 
 @section('isi')
+
+
 <h1 class="text-2xl font-bold text-slate-900">Layanan</h1>
 <p class="text-sm text-slate-500 mt-1">Pilih layanan sesuai keperluan Anda, lalu ambil nomor antrean dari beranda.</p>
 

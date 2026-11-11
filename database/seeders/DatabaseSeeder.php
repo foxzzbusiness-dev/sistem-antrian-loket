@@ -54,11 +54,19 @@ class DatabaseSeeder extends Seeder
 
         [$a, $b, $c] = [$layanan[0], $layanan[1], $layanan[2]];
 
-        foreach (range(15, 20) as $n) $buat($a, $n, 'selesai', 'Loket 01');
+        foreach (range(15, 20) as $n) {
+            $buat($a, $n, 'selesai', 'Loket 01');
+        }
         $buat($a, 21, 'dilayani', 'Loket 01');
-        foreach (range(22, 24) as $n) $buat($a, $n, 'menunggu');
-        foreach (range(1, 3) as $n) $buat($b, $n, 'menunggu');
-        foreach (range(1, 2) as $n) $buat($c, $n, 'selesai', 'Loket 05');
+        foreach (range(22, 24) as $n) {
+            $buat($a, $n, 'menunggu');
+        }
+        foreach (range(1, 3) as $n) {
+            $buat($b, $n, 'menunggu');
+        }
+        foreach (range(1, 2) as $n) {
+            $buat($c, $n, 'selesai', 'Loket 05');
+        }
         $buat($c, 3, 'menunggu');
     }
 }
