@@ -8,7 +8,12 @@ class Antrean extends Model
 {
     protected $table = 'antrean';
     protected $guarded = [];
-    protected $casts = ['diterbitkan_at' => 'datetime'];
+    protected $casts = [
+        'diterbitkan_at' => 'datetime',
+        'dimulai_at' => 'datetime',
+        'selesai_at' => 'datetime',
+        'dipanggil_at' => 'datetime',
+    ];
 
     public function layanan()
     {
