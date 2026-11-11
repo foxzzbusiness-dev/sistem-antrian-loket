@@ -9,8 +9,8 @@ use App\Http\Controllers\TvController;
 
 // ---- Pengunjung (tanpa login) ----
 Route::controller(PenggunaController::class)->group(function () {
-    Route::get('/c', 'beranda')->name('beranda');
-    Route::get('/', 'layanan')->name('layanan');
+    Route::get('/', 'beranda')->name('beranda');
+    Route::get('/layanan', 'layanan')->name('layanan');
     Route::get('/panduan-antrean', 'panduan')->name('panduan');
 
     Route::get('/call','incall')->name('call');

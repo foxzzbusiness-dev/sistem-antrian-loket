@@ -168,68 +168,6 @@
             <div>{{ $daftar->links() }}</div>
         </div>
     </section>
-
-    {{-- Kartu bawah --}}
-    <div class="grid lg:grid-cols-3 gap-4 mt-5">
-        <section class="bg-white rounded-2xl border border-garis p-5">
-            <div class="flex justify-between items-center">
-                <h2 class="text-sm font-semibold text-slate-900">Manajemen loket</h2>
-                <a href="#" class="text-[11px] font-semibold text-slate-700 hover:underline">Kelola →</a>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-1">{{ $daftarLoket->where('status', 'aktif')->count() }} loket aktif •
-                {{ $daftarLoket->where('status', 'istirahat')->count() }} istirahat</p>
-            <div class="grid grid-cols-4 gap-2 mt-4">
-                @foreach ($daftarLoket as $lk)
-                    <div class="rounded-lg bg-kanvas pt-2.5 text-center">
-                        <div class="text-sm font-semibold text-slate-800">
-                            {{ \Illuminate\Support\Str::afterLast($lk->nama, ' ') }}</div>
-                        <div class="mt-2 h-0.5 rounded-full {{ ['aktif' => 'bg-emerald-500', 'istirahat' => 'bg-amber-400', 'tutup' => 'bg-slate-300'][$lk->status] }}"
-                            title="{{ ucfirst($lk->status) }}"></div>
-                    </div>
-                @endforeach
-            </div>
-        </section>
-
-        <section class="bg-white rounded-2xl border border-garis p-5">
-            <div class="flex justify-between items-center">
-                <h2 class="text-sm font-semibold text-slate-900">Manajemen pengguna</h2>
-                <a href="#" class="text-[11px] font-semibold text-slate-700 hover:underline">Kelola →</a>
-            </div>
-            <ul class="mt-4 space-y-3">
-                @foreach ($daftarPengguna as $u)
-                    <li class="flex items-center gap-3">
-                        <span
-                            class="w-8 h-8 rounded-full bg-navy-50 text-navy text-[11px] font-bold grid place-items-center">{{ collect(explode(' ', $u->name))->map(fn($k) => mb_substr($k, 0, 1))->take(2)->join('') }}</span>
-                        <div class="flex-1 leading-tight">
-                            <div class="text-xs font-semibold text-slate-900">{{ $u->name }}</div>
-                            <div class="text-[11px] text-slate-500">
-                                {{ $u->role === 'admin' ? 'Administrator' : 'Petugas • ' . $u->loket }}</div>
-                        </div>
-                        <span class="text-[11px] text-emerald-700">Aktif</span>
-                    </li>
-                @endforeach
-            </ul>
-        </section>
-
-        <section class="bg-white rounded-2xl border border-garis p-5">
-            <div class="flex justify-between items-center">
-                <h2 class="text-sm font-semibold text-slate-900">Video promosi</h2>
-                <a href="#" class="text-[11px] font-semibold text-slate-700 hover:underline">Kelola →</a>
-            </div>
-            <div class="mt-4 flex items-center gap-3">
-                <span class="w-9 h-9 rounded-lg bg-kanvas grid place-items-center text-slate-500"><i
-                        data-lucide="clapperboard" class="w-4 h-4"></i></span>
-                <div class="leading-tight">
-                    <div class="text-xs font-semibold text-slate-900">Lebih mudah, lebih dekat.</div>
-                    <div class="text-[11px] text-slate-500">02:15 • MP4 • Sedang ditayangkan</div>
-                </div>
-            </div>
-            <button type="button"
-                class="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-lg border border-garis py-2 text-[11px] font-semibold text-slate-700 hover:bg-kanvas">
-                <i data-lucide="upload" class="w-3.5 h-3.5"></i>Unggah video baru
-            </button>
-        </section>
-    </div>
 @endsection
 
 @push('skrip')

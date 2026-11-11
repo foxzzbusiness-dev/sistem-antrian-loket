@@ -4,10 +4,7 @@
             <span class="w-9 h-9 rounded-lg bg-navy text-white grid place-items-center">
                 <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
             </span>
-            <span class="leading-tight">
-                <span class="block text-sm font-bold text-slate-900">Sistem Antrian Loket</span>
-                <span class="block text-[11px] text-slate-500">Mal Pelayanan Publik • Kota Bandung</span>
-            </span>
+           
         </a>
 
         <nav class="hidden md:flex items-center gap-8 mx-auto text-sm">

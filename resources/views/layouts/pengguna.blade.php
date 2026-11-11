@@ -24,14 +24,14 @@
 
 <body class="bg-kanvas font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
-    {{-- @include('components.header') --}}
+    @include('components.header')
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
         @include('components.alert')
         @yield('isi')
     </main>
 
-    {{-- @include('components.footer') --}}
+    @include('components.footer')
 
     <script>lucide.createIcons();</script>
 </body>
