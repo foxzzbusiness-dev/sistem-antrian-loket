@@ -9,7 +9,6 @@ return new class extends Migration {
     {
         Schema::create('antrean', function (Blueprint $t) {
             $t->id();
-            $t->string('token', 64)->nullable()->index();   // penanda pengunjung (dari session)
             $t->foreignId('layanan_id')->constrained('layanan')->cascadeOnDelete();
             $t->unsignedInteger('urutan');
             $t->string('nomor', 8);                         // A-025

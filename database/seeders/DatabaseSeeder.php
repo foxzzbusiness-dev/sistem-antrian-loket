@@ -40,7 +40,6 @@ class DatabaseSeeder extends Seeder
         $buat = function (Layanan $l, int $urutan, string $status, ?string $loket = null) use (&$menit) {
             $menit += 3;
             Antrean::create([
-                'token' => null,
                 'layanan_id' => $l->id,
                 'urutan' => $urutan,
                 'nomor' => sprintf('%s-%03d', $l->kode, $urutan),

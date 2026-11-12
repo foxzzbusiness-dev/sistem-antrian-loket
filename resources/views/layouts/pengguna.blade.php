@@ -1,39 +1,32 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('judul', 'Sistem Antrian Loket')</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    {{-- Untuk produksi, pindahkan Tailwind ke Vite (npm). CDN ini cukup untuk pengembangan. --}}
-    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-                    colors: { navy: { DEFAULT: '#14365a', 700: '#1b4674', 50: '#e8f0fa' }, kanvas: '#f4f7fa', garis: '#e3e9f0' }
-                }
-            }
-        };
-    </script>
-    <script src="https://unpkg.com/lucide@0.460.0"></script>
+    @include('partials.aset')
 </head>
-
 <body class="bg-kanvas font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
-    {{-- @include('components.header') --}}
+<header class="bg-white border-b border-garis">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center">
+        <a href="{{ route('beranda') }}" class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-lg bg-navy text-white grid place-items-center"><i data-lucide="layout-dashboard" class="w-4 h-4"></i></span>
+            <span class="leading-tight">
+                <span class="block text-sm font-bold text-slate-900">Sistem Antrian Loket</span>
+                <span class="block text-[11px] text-slate-500">Mal Pelayanan Publik • Kota Bandung</span>
+            </span>
+        </a>
+    </div>
+</header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
-        @include('components.alert')
-        @yield('isi')
-    </main>
+<main class="flex-1 max-w-6xl w-full mx-auto px-6 py-8">
+    @if (session('galat'))
+        <div class="mb-5 rounded-lg bg-red-50 text-red-800 text-sm px-4 py-3 border border-red-200">{{ session('galat') }}</div>
+    @endif
+    @yield('isi')
+</main>
 
-    {{-- @include('components.footer') --}}
-
-    <script>lucide.createIcons();</script>
+<script>lucide.createIcons();</script>
 </body>
-
 </html>
