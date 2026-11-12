@@ -13,15 +13,28 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Akun petugas (kata sandi: password)
-        User::forceCreate([
-            'name' => 'Rina Andini', 'username' => 'rina', 'email' => 'rina@example.com',
-            'password' => Hash::make('password'), 'role' => 'petugas', 'loket' => 'Loket 01',
-        ]);
-        User::forceCreate([
-            'name' => 'Dimas Pratama', 'username' => 'dimas', 'email' => 'dimas@example.com',
-            'password' => Hash::make('password'), 'role' => 'admin', 'loket' => null,
-        ]);
+        // Akun petugas dan admin (kata sandi semuanya: password)
+        $n = 0;
+        foreach ([
+            ['Rina Andini', 'rina', 'petugas', 'Loket 01', true],
+            ['Andi Wijaya', 'andi', 'petugas', 'Loket 02', true],
+            ['Sari Dewi', 'sari', 'petugas', 'Loket 03', true],
+            ['Budi Hartono', 'budi', 'petugas', null, false],
+            ['Dimas Pratama', 'dimas', 'admin', null, true],
+        ] as [$nama, $username, $role, $loket, $aktif]) {
+            User::forceCreate([
+                'name' => $nama,
+                'username' => $username,
+                'kode' => $role === 'petugas' ? sprintf('PTO-%03d', ++$n) : null,
+                'email' => "{$username}@example.com",
+                'password' => Hash::make('password'),
+                'role' => $role,
+                'loket' => $loket,
+                'shift_mulai' => '08:00',
+                'shift_selesai' => '16:00',
+                'aktif' => $aktif,
+            ]);
+        }
 
         foreach (['Loket 01' => 'aktif', 'Loket 02' => 'aktif', 'Loket 03' => 'aktif', 'Loket 04' => 'istirahat'] as $nama => $status) {
             Loket::create(['nama' => $nama, 'status' => $status]);

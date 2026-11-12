@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Antrean;
-use App\Models\Layanan;
-use App\Models\Loket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,45 +21,25 @@ class PetugasController extends Controller
             : null;
     }
 
-    public function dashboard(Request $request)
+    public function portal(Request $request)
     {
         $petugas = $request->user();
 
-        $stat = [
-            'total' => $this->hariIni()->count(),
-            'menunggu' => $this->hariIni()->where('status', 'menunggu')->count(),
-            'dilayani' => $this->hariIni()->where('status', 'dilayani')->count(),
-            'selesai' => $this->hariIni()->where('status', 'selesai')->count(),
-        ];
+        // Sinyal "portal sedang dibuka" untuk pemantauan admin
+        User::whereKey($petugas->id)->update(['terakhir_aktif_at' => now()]);
 
-        $aktif = $this->aktifDi($petugas->loket);
-        $berikutnya = $this->hariIni()->where('status', 'menunggu')
-            ->orderBy('diterbitkan_at')->orderBy('id')->first();
-
-        $daftar = $this->hariIni()->with('layanan')
-            ->when($request->q, fn ($q, $v) => $q->where('nomor', 'like', "%{$v}%"))
-            ->when($request->layanan, fn ($q, $v) => $q->where('layanan_id', $v))
-            ->orderByRaw("case status when 'dilayani' then 0 when 'menunggu' then 1 when 'selesai' then 2 else 3 end")
-            ->orderBy('diterbitkan_at')->orderBy('id')
-            ->paginate(5)->withQueryString();
-
-        return view('petugas.dashboard', [
+        return view('petugas.portal', [
             'petugas' => $petugas,
-            'stat' => $stat,
-            'aktif' => $aktif,
-            'berikutnya' => $berikutnya,
-            'daftar' => $daftar,
-            'daftarLayanan' => Layanan::orderBy('kode')->get(),
-            'daftarLoket' => Loket::orderBy('nama')->get(),
-            'daftarPengguna' => User::orderBy('id')->take(2)->get(),
+            'aktif' => $this->aktifDi($petugas->loket),
+            'menunggu' => $this->hariIni()->with('layanan')->where('status', 'menunggu')
+                ->orderBy('diterbitkan_at')->orderBy('id')->get(),
         ]);
     }
 
     public function panggil(Request $request)
     {
         $petugas = $request->user();
-     
-        
+
         if (! $petugas->loket) {
             return back()->with('galat', 'Akun Anda belum ditempatkan di loket.');
         }
@@ -121,13 +99,17 @@ class PetugasController extends Controller
         return back()->with('sukses', "Layanan {$aktif->nomor} diselesaikan.");
     }
 
-    public function batal(Antrean $antrean)
+    /** Batalkan antrean menunggu, atau antrean yang sedang dilayani di loket sendiri. */
+    public function batal(Request $request, Antrean $antrean)
     {
-        if ($antrean->status !== 'menunggu') {
-            return back()->with('galat', 'Hanya antrean yang menunggu yang bisa dibatalkan.');
+        $sah = $antrean->status === 'menunggu'
+            || ($antrean->status === 'dilayani' && $antrean->loket === $request->user()->loket);
+
+        if (! $sah) {
+            return back()->with('galat', 'Antrean ini tidak bisa dibatalkan.');
         }
 
-        $antrean->update(['status' => 'batal']);
+        $antrean->update(['status' => 'batal', 'selesai_at' => now()]);
 
         return back()->with('sukses', "Antrean {$antrean->nomor} dibatalkan.");
     }

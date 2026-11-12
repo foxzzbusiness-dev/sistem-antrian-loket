@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login Petugas • Sistem Antrian Loket</title>
+    <title>{{ $judul }}</title>
     @include('partials.aset')
 </head>
 <body class="font-sans antialiased text-slate-800">
@@ -21,7 +21,7 @@
 
         <div class="mt-16">
             <span class="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2.5 py-1 text-[10px] font-semibold tracking-wide">
-                <i data-lucide="shield-check" class="w-3 h-3"></i>PORTAL PETUGAS
+                <i data-lucide="shield-check" class="w-3 h-3"></i>{{ $badge }}
             </span>
             <h1 class="mt-5 text-4xl xl:text-5xl font-extrabold leading-tight tracking-tight">SISTEM ANTRIAN LOKET</h1>
             <p class="mt-4 text-sm text-white/70 max-w-xs">Layanan antrean digital yang mudah, cepat, dan nyaman.</p>
@@ -69,13 +69,13 @@
             <div class="w-full max-w-sm">
                 <span class="w-10 h-10 rounded-lg bg-navy-50 text-navy grid place-items-center"><i data-lucide="log-in" class="w-4 h-4"></i></span>
                 <h2 class="mt-4 text-2xl font-bold text-navy">Selamat datang kembali</h2>
-                <p class="mt-1.5 text-xs text-slate-500">Masuk ke akun petugas untuk mengelola antrean dan memberikan pelayanan terbaik.</p>
+                <p class="mt-1.5 text-xs text-slate-500">{{ $deskripsi }}</p>
 
                 @if ($errors->any())
                     <div class="mt-5 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs px-3.5 py-2.5">{{ $errors->first() }}</div>
                 @endif
 
-                <form method="POST" action="{{ route('petugas.masuk') }}" class="mt-6 space-y-4">
+                <form method="POST" action="{{ $aksi }}" class="mt-6 space-y-4">
                     @csrf
                     <div>
                         <label for="username" class="text-xs font-semibold text-slate-800">Nama pengguna</label>
@@ -115,7 +115,7 @@
 
                 <div class="mt-6 flex gap-2.5 rounded-lg bg-kanvas px-3.5 py-3 text-[11px] text-slate-500">
                     <i data-lucide="shield-check" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
-                    Akses khusus petugas berwenang. Jaga kerahasiaan akun Anda dan keluar setelah selesai bertugas.
+                    Akses khusus pengguna berwenang. Jaga kerahasiaan akun Anda dan keluar setelah selesai bertugas.
                 </div>
             </div>
         </div>
