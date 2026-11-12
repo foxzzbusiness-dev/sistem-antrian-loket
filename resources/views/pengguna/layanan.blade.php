@@ -18,7 +18,7 @@
                 <div class="flex justify-between"><dt>Rata-rata layanan</dt><dd class="font-medium text-slate-900">{{ $l->rata_rata_menit }} menit</dd></div>
                 <div class="flex justify-between"><dt>Menunggu saat ini</dt><dd class="font-medium text-slate-900">{{ $l->antrean()->where('status','menunggu')->count() }} orang</dd></div>
             </dl>
-            <a href="{{ route('beranda', ['layanan' => $l->id]) }}" class="mt-5 text-center rounded-lg bg-navy text-white text-sm font-semibold px-4 py-2.5 hover:bg-navy-700">Pilih layanan ini</a>
+            <button type="submit" class="mt-5 text-center rounded-lg bg-navy text-white text-sm font-semibold px-4 py-2.5 hover:bg-navy-700">Pilih layanan ini</a>
         </article>
     @endforeach
 </div>
